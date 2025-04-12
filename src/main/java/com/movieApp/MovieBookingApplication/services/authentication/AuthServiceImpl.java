@@ -6,6 +6,7 @@ import com.movieApp.MovieBookingApplication.entity.User;
 import com.movieApp.MovieBookingApplication.enums.UserRole;
 import com.movieApp.MovieBookingApplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
         user.setName(signupRequestDTO.getName());
         user.setEmail(signupRequestDTO.getEmail());
         user.setPhone(signupRequestDTO.getPhone());
-        user.setPassword(signupRequestDTO.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(signupRequestDTO.getPassword()));
 
         user.setRole(UserRole.COMPANY);
 
@@ -39,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         user.setLastname(signupRequestDTO.getLastname());
         user.setEmail(signupRequestDTO.getEmail());
         user.setPhone(signupRequestDTO.getPhone());
-        user.setPassword(signupRequestDTO.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(signupRequestDTO.getPassword()));
 
         user.setRole(UserRole.CLIENT);
 
