@@ -41,7 +41,7 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
-    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String TOKEN_PREFIX = "Bearer";
 
     public static final String HEADER_STRING = "Authorization";
 
@@ -85,7 +85,7 @@ public class AuthenticationController {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
-        User user = userRepository.findFirstByEmail(userDetails.getUsername());
+        User user = userRepository.findFirstByEmail(authenticationRequest.getUsername());
 
         response.getWriter().write(new JSONObject()
                 .put("userId", user.getId())

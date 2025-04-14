@@ -5,12 +5,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.websocket.Decoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,13 +18,14 @@ import java.util.function.Function;
 public class JwtUtil {
 
     public static final String SECRET = "u8J3k9L2m5P7q1R6t4W8x0Z7v3Y5a2N9o6T1p4Q8r2M7L5X3V9K1W6Y8Z0P3Q7R";
+    //private static final String SECRET = "u8J3k9L2m5P7q1R6t4W8x0Z7v3Y5a2N9";
 
     private String createToken(Map<String, Object> claims, String userName) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 30 minutes
                 .signWith(SignatureAlgorithm.HS256, getSignKey()).compact();
 
     }
@@ -59,7 +58,7 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+        return extractClaim(token, Claims:: getSubject);
     }
 
     public boolean isTokenExpired(String token) {
